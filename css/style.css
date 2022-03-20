@@ -2004,6 +2004,9 @@ body.popup-show::after {
   .item-impact__box {
     flex: 0 1 100%;
   }
+  .item-impact__box:last-child {
+    padding-bottom: 30px;
+  }
 }
 .item-impact__column {
   display: flex;
