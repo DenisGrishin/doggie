@@ -218,19 +218,19 @@
 							<div class="block-form__body">
 								<div class="block-form__items">
 									<div class="block-form__item">
-										<input autocomplete="off" type="text" name="form[]" data-error="Ошибка" placeholder="Name"
-											class="block-form__input">
+										<input autocomplete="off" type="text" name="user-name" data-error="Ошибка"
+											placeholder="Name" class="block-form__input">
 									</div>
 									<div class="block-form__item">
-										<input data-required="email" autocomplete="off" type="email" name="form[]"
+										<input data-required="email" autocomplete="off" type="email" name="user-email"
 											data-error="Ошибка" placeholder="Email" class="block-form__input">
 									</div>
 									<div class="block-form__item">
-										<input autocomplete="off" type="text" name="form[]" data-error="Ошибка"
-											placeholder="Phone Number" class="block-form__input">
+										<input autocomplete="off" type="text" name="user-tel" data-error="Ошибка"
+											placeholder="Phone Number" data-tel-input class="block-form__input">
 									</div>
 									<div class="block-form__item">
-										<select name="form[]" class="block-form__select">
+										<select name="user-select" class="block-form__select">
 											<option value="1" selected>Select Service</option>
 											<option value="2">Select Service</option>
 											<option value="3">Select Service</option>
@@ -239,7 +239,8 @@
 									</div>
 								</div>
 								<textarea wrap class="block-form__textarea"
-									placeholder="Tell us about your puppers include his/her name" name="form" id=""></textarea>
+									placeholder="Tell us about your puppers include his/her name" name="user-text"
+									id=""></textarea>
 								<button type="submit" class="block-form__btn button">Make an Appointment</button>
 							</div>
 						</form>
@@ -461,15 +462,15 @@
 						<h2 class="form-popup__title">Make an appointment</h2>
 						<div class="form-popup__items">
 							<div class="form-popup__item">
-								<input autocomplete="off" type="text" name="form[]" data-error="Ошибка" placeholder="Name"
+								<input autocomplete="off" type="text" name="user-name" data-error="Ошибка" placeholder="Name"
 									class="form-popup__input">
 							</div>
 							<div class="form-popup__item">
-								<input autocomplete="off" type="email" name="form[]" data-error="Ошибка" placeholder="Email"
+								<input autocomplete="off" type="email" name="user-email" data-error="Ошибка" placeholder="Email"
 									class="form-popup__input">
 							</div>
 							<div class="form-popup__item">
-								<input autocomplete="off" type="tel" name="form[]" data-error="Ошибка"
+								<input autocomplete="off" type="tel" data-tel-input name="user-tel" data-error="Ошибка"
 									placeholder="Phone Number" class="form-popup__input">
 							</div>
 							<div class="form-popup__item">
