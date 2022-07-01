@@ -344,9 +344,9 @@
     a = (e, t = 500) => (e.hidden ? l(e, t) : s(e, t)),
     i = !0,
     o = (e = 500) => {
-      document.documentElement.classList.contains("lock") ? c(e) : n(e);
+      document.documentElement.classList.contains("lock") ? n(e) : c(e);
     },
-    c = (e = 500) => {
+    n = (e = 500) => {
       let t = document.querySelector("body");
       if (i) {
         let s = document.querySelectorAll("[data-lp]");
@@ -363,7 +363,7 @@
           }, e);
       }
     },
-    n = (e = 500) => {
+    c = (e = 500) => {
       let t = document.querySelector("body");
       if (i) {
         let s = document.querySelectorAll("[data-lp]");
@@ -421,10 +421,10 @@
               l = s[1],
               i = s[2],
               o = window.matchMedia(s[0]),
-              c = e.filter(function (e) {
+              n = e.filter(function (e) {
                 if (e.value === l && e.type === i) return !0;
               });
-            a.push({ itemsArray: c, matchMedia: o });
+            a.push({ itemsArray: n, matchMedia: o });
           }),
           a
         );
@@ -756,14 +756,14 @@
         a = e.dataset.class ? ` ${e.dataset.class}` : "",
         i = !!e.dataset.href && e.dataset.href,
         o = e.hasAttribute("data-href-blank") ? 'target="_blank"' : "";
-      let c = "";
+      let n = "";
       return (
-        (c += i
+        (n += i
           ? `<a ${o} ${l} href="${i}" data-value="${e.value}" class="${this.selectClasses.classSelectOption}${a}${s}">`
           : `<button ${l} class="${this.selectClasses.classSelectOption}${a}${s}" data-value="${e.value}" type="button">`),
-        (c += this.getSelectElementContent(e)),
-        (c += i ? "</a>" : "</button>"),
-        c
+        (n += this.getSelectElementContent(e)),
+        (n += i ? "</a>" : "</button>"),
+        n
       );
     }
     setOptions(e, t) {
@@ -938,22 +938,93 @@
     emailTest: (e) =>
       !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,8})+$/.test(e.value),
   };
-  let m = !1;
+  const m = () => {
+    const e = document.querySelectorAll("form"),
+      t = document.querySelectorAll("input"),
+      s = "Загрузка....",
+      l = "Спасибо! Скоро мы с вами свяжемся",
+      a = "Что-то пошло не так...";
+    e.forEach((e) => {
+      e.addEventListener("submit", (i) => {
+        i.preventDefault();
+        let o = document.createElement("div");
+        o.classList.add("status"), e.appendChild(o);
+        (async (e, t) => {
+          document.querySelector(".status").textContent = s;
+          let l = await fetch(e, { method: "POST", body: t });
+          return await l.text();
+        })("assets/server.php", new FormData(e))
+          .then((e) => {
+            console.log(e), (o.textContent = l);
+          })
+          .catch(() => (o.textContent = a))
+          .finally(() => {
+            t.forEach((e) => {
+              e.value = "";
+            }),
+              setTimeout(() => {
+                o.remove();
+              }, 5e3);
+          });
+      });
+    });
+  };
+  let g = !1;
   setTimeout(() => {
-    if (m) {
+    if (g) {
       let e = new Event("windowScroll");
       window.addEventListener("scroll", function (t) {
         document.dispatchEvent(e);
       });
     }
   }, 0);
-  const g = document.querySelectorAll("._anim-items");
-  if (g.length > 0) {
-    function f() {
-      for (let e = 0; e < g.length; e++) {
-        const t = g[e],
+  var f = document.querySelectorAll("input[data-tel-input]"),
+    S = function (e) {
+      return e.value.replace(/\D/g, "");
+    },
+    v = function (e) {
+      var t = e.target,
+        s = S(t),
+        l = e.clipboardData || window.clipboardData;
+      if (l) {
+        var a = l.getData("Text");
+        if (/\D/g.test(a)) return void (t.value = s);
+      }
+    },
+    b = function (e) {
+      var t = e.target,
+        s = S(t),
+        l = t.selectionStart,
+        a = "";
+      if (!s) return (t.value = "");
+      if (t.value.length == l) {
+        if (["7", "8", "9"].indexOf(s[0]) > -1) {
+          "9" == s[0] && (s = "7" + s);
+          var i = "8" == s[0] ? "8" : "+7";
+          (a = t.value = i + " "),
+            s.length > 1 && (a += "(" + s.substring(1, 4)),
+            s.length >= 5 && (a += ") " + s.substring(4, 7)),
+            s.length >= 8 && (a += "-" + s.substring(7, 9)),
+            s.length >= 10 && (a += "-" + s.substring(9, 11));
+        } else a = "+" + s.substring(0, 16);
+        t.value = a;
+      } else e.data && /\D/g.test(e.data) && (t.value = s);
+    },
+    y = function (e) {
+      var t = e.target.value.replace(/\D/g, "");
+      8 == e.keyCode && 1 == t.length && (e.target.value = "");
+    };
+  for (var A of f)
+    A.addEventListener("keydown", y),
+      A.addEventListener("input", b, !1),
+      A.addEventListener("paste", v, !1);
+  const E = document.querySelectorAll("._anim-items");
+  if (E.length > 0) {
+    function C() {
+      for (let e = 0; e < E.length; e++) {
+        const t = E[e],
           s = t.offsetHeight,
-          l = S(t).top,
+          l = _(t).top,
           a = 4;
         let i = window.innerHeight - s / a;
         s > window.innerHeight &&
@@ -963,15 +1034,15 @@
             : t.classList.remove("_active");
       }
     }
-    function S(e) {
+    function _(e) {
       const t = e.getBoundingClientRect(),
         s = window.pageXOffset || document.documentElement.scrollLeft,
         l = window.pageYOffset || document.documentElement.scrollTop;
       return { top: t.top + l, left: t.left + s };
     }
-    window.addEventListener("scroll", f),
+    window.addEventListener("scroll", C),
       setTimeout(() => {
-        f();
+        C();
       }, 300);
   }
   (window.FLS = !0),
@@ -1014,10 +1085,10 @@
               t.matches || !t
                 ? (e.classList.add("_spoller-init"),
                   o(e),
-                  e.addEventListener("click", c))
+                  e.addEventListener("click", n))
                 : (e.classList.remove("_spoller-init"),
                   o(e, !1),
-                  e.removeEventListener("click", c));
+                  e.removeEventListener("click", n));
           });
         }
         function o(e, t = !0) {
@@ -1032,20 +1103,20 @@
                   (e.nextElementSibling.hidden = !1));
             });
         }
-        function c(e) {
+        function n(e) {
           const t = e.target;
           if (t.closest("[data-spoller]")) {
             const s = t.closest("[data-spoller]"),
               l = s.closest("[data-spollers]"),
               i = !!l.hasAttribute("data-one-spoller");
             l.querySelectorAll("._slide").length ||
-              (i && !s.classList.contains("_spoller-active") && n(l),
+              (i && !s.classList.contains("_spoller-active") && c(l),
               s.classList.toggle("_spoller-active"),
               a(s.nextElementSibling, 500)),
               e.preventDefault();
           }
         }
-        function n(e) {
+        function c(e) {
           const t = e.querySelector("[data-spoller]._spoller-active");
           t &&
             (t.classList.remove("_spoller-active"),
@@ -1176,5 +1247,6 @@
             t.hasAttribute("data-validate") && p.validateInput(t));
         });
     })(),
+    m(),
     (u.selectModule = new h({}));
 })();
