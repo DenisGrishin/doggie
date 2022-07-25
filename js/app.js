@@ -430,7 +430,34 @@
         );
     }
   }
-  class h {
+  let h = (e, t = !1, s = 500, l = 0) => {
+    const a = document.querySelector(e);
+    if (a) {
+      let i = "",
+        o = 0;
+      t &&
+        ((i = "header.header"), (o = document.querySelector(i).offsetHeight));
+      let c = {
+        speedAsDuration: !0,
+        speed: s,
+        header: i,
+        offset: l,
+        easing: "easeOutQuad",
+      };
+      if (
+        (document.documentElement.classList.contains("menu-open") &&
+          (n(), document.documentElement.classList.remove("menu-open")),
+        "undefined" != typeof SmoothScroll)
+      )
+        new SmoothScroll().animateScroll(a, "", c);
+      else {
+        let e = a.getBoundingClientRect().top + scrollY;
+        window.scrollTo({ top: o ? e - o : e, behavior: "smooth" });
+      }
+      r(`[gotoBlock]: Юхуу...едем к ${e}`);
+    } else r(`[gotoBlock]: Ой ой..Такого блока нет на странице: ${e}`);
+  };
+  class u {
     constructor(e, t = null) {
       if (
         ((this.config = Object.assign({ init: !0, logging: !0 }, e)),
@@ -811,7 +838,7 @@
     }
     setSelectChange(e) {
       if (
-        (e.hasAttribute("data-validate") && p.validateInput(e),
+        (e.hasAttribute("data-validate") && m.validateInput(e),
         e.hasAttribute("data-submit") && e.value)
       ) {
         let t = document.createElement("button");
@@ -863,8 +890,8 @@
       this.config.logging && r(`[select]: ${e}`);
     }
   }
-  const u = { inputMaskModule: null, selectModule: null };
-  let p = {
+  const p = { inputMaskModule: null, selectModule: null };
+  let m = {
     getErrors(e) {
       let t = 0,
         s = e.querySelectorAll("*[data-required]");
@@ -917,7 +944,7 @@
             const s = t[e];
             s.parentElement.classList.remove("_form-focus"),
               s.classList.remove("_form-focus"),
-              p.removeError(s),
+              m.removeError(s),
               (s.value = s.dataset.placeholder);
           }
           let s = e.querySelectorAll(".checkbox__input");
@@ -925,49 +952,18 @@
             for (let e = 0; e < s.length; e++) {
               s[e].checked = !1;
             }
-          if (u.selectModule) {
+          if (p.selectModule) {
             let t = e.querySelectorAll(".select");
             if (t.length)
               for (let e = 0; e < t.length; e++) {
                 const s = t[e].querySelector("select");
-                u.selectModule.selectBuild(s);
+                p.selectModule.selectBuild(s);
               }
           }
         }, 0);
     },
     emailTest: (e) =>
       !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,8})+$/.test(e.value),
-  };
-  const m = () => {
-    const e = document.querySelectorAll("form"),
-      t = document.querySelectorAll("input"),
-      s = "Загрузка....",
-      l = "Спасибо! Скоро мы с вами свяжемся",
-      a = "Что-то пошло не так...";
-    e.forEach((e) => {
-      e.addEventListener("submit", (i) => {
-        i.preventDefault();
-        let o = document.createElement("div");
-        o.classList.add("status"), e.appendChild(o);
-        (async (e, t) => {
-          document.querySelector(".status").textContent = s;
-          let l = await fetch(e, { method: "POST", body: t });
-          return await l.text();
-        })("assets/server.php", new FormData(e))
-          .then((e) => {
-            console.log(e), (o.textContent = l);
-          })
-          .catch(() => (o.textContent = a))
-          .finally(() => {
-            t.forEach((e) => {
-              e.value = "";
-            }),
-              setTimeout(() => {
-                o.remove();
-              }, 5e3);
-          });
-      });
-    });
   };
   let g = !1;
   setTimeout(() => {
@@ -977,75 +973,139 @@
         document.dispatchEvent(e);
       });
     }
-  }, 0);
-  var f = document.querySelectorAll("input[data-tel-input]"),
-    S = function (e) {
-      return e.value.replace(/\D/g, "");
-    },
-    v = function (e) {
-      var t = e.target,
-        s = S(t),
-        l = e.clipboardData || window.clipboardData;
-      if (l) {
-        var a = l.getData("Text");
-        if (/\D/g.test(a)) return void (t.value = s);
+  }, 0),
+    window.addEventListener("DOMContentLoaded", () => {
+      let e = {
+          Android: function () {
+            return navigator.userAgent.match(/Android/i);
+          },
+          BlackBerry: function () {
+            return navigator.userAgent.match(/BlackBerry/i);
+          },
+          iOS: function () {
+            return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+          },
+          Opera: function () {
+            return navigator.userAgent.match(/Opera Mini/i);
+          },
+          Windows: function () {
+            return navigator.userAgent.match(/IEMobile/i);
+          },
+          any: function () {
+            return (
+              e.Android() ||
+              e.BlackBerry() ||
+              e.iOS() ||
+              e.Opera() ||
+              e.Windows()
+            );
+          },
+        },
+        t = document.querySelector("body");
+      if (e.any()) {
+        t.classList.add("touch");
+        let h = document.querySelectorAll(".menu-drop__arrow");
+        for (let u = 0; u < h.length; u++) {
+          let p = h[u].previousElementSibling,
+            m = h[u].nextElementSibling,
+            g = h[u];
+          p.classList.add("parent"),
+            p.addEventListener("click", function () {
+              m.classList.toggle("open"), g.classList.toggle("active");
+            });
+        }
+      } else t.classList.add("mouse");
+      var s = document.querySelectorAll("input[data-tel-input]"),
+        l = function (e) {
+          return e.value.replace(/\D/g, "");
+        },
+        a = function (e) {
+          var t = e.target,
+            s = l(t),
+            a = e.clipboardData || window.clipboardData;
+          if (a) {
+            var i = a.getData("Text");
+            if (/\D/g.test(i)) return void (t.value = s);
+          }
+        },
+        i = function (e) {
+          var t = e.target,
+            s = l(t),
+            a = t.selectionStart,
+            i = "";
+          if (!s) return (t.value = "");
+          if (t.value.length == a) {
+            if (["7", "8", "9"].indexOf(s[0]) > -1) {
+              "9" == s[0] && (s = "7" + s);
+              var o = "8" == s[0] ? "8" : "+7";
+              (i = t.value = o + " "),
+                s.length > 1 && (i += "(" + s.substring(1, 4)),
+                s.length >= 5 && (i += ") " + s.substring(4, 7)),
+                s.length >= 8 && (i += "-" + s.substring(7, 9)),
+                s.length >= 10 && (i += "-" + s.substring(9, 11));
+            } else i = "+" + s.substring(0, 16);
+            t.value = i;
+          } else e.data && /\D/g.test(e.data) && (t.value = s);
+        },
+        o = function (e) {
+          var t = e.target.value.replace(/\D/g, "");
+          8 == e.keyCode && 1 == t.length && (e.target.value = "");
+        };
+      for (var n of s)
+        n.addEventListener("keydown", o),
+          n.addEventListener("input", i, !1),
+          n.addEventListener("paste", a, !1);
+      const c = document.querySelectorAll("._anim-items");
+      if (c.length > 0) {
+        function f() {
+          for (let e = 0; e < c.length; e++) {
+            const t = c[e],
+              s = t.offsetHeight,
+              l = S(t).top,
+              a = 4;
+            let i = window.innerHeight - s / a;
+            s > window.innerHeight &&
+              (i = window.innerHeight - window.innerHeight / a),
+              pageYOffset > l - i && pageYOffset < l + s
+                ? t.classList.add("_active")
+                : t.classList.remove("_active");
+          }
+        }
+        function S(e) {
+          const t = e.getBoundingClientRect(),
+            s = window.pageXOffset || document.documentElement.scrollLeft,
+            l = window.pageYOffset || document.documentElement.scrollTop;
+          return { top: t.top + l, left: t.left + s };
+        }
+        window.addEventListener("scroll", f),
+          setTimeout(() => {
+            f();
+          }, 300);
       }
-    },
-    b = function (e) {
-      var t = e.target,
-        s = S(t),
-        l = t.selectionStart,
-        a = "";
-      if (!s) return (t.value = "");
-      if (t.value.length == l) {
-        if (["7", "8", "9"].indexOf(s[0]) > -1) {
-          "9" == s[0] && (s = "7" + s);
-          var i = "8" == s[0] ? "8" : "+7";
-          (a = t.value = i + " "),
-            s.length > 1 && (a += "(" + s.substring(1, 4)),
-            s.length >= 5 && (a += ") " + s.substring(4, 7)),
-            s.length >= 8 && (a += "-" + s.substring(7, 9)),
-            s.length >= 10 && (a += "-" + s.substring(9, 11));
-        } else a = "+" + s.substring(0, 16);
-        t.value = a;
-      } else e.data && /\D/g.test(e.data) && (t.value = s);
-    },
-    y = function (e) {
-      var t = e.target.value.replace(/\D/g, "");
-      8 == e.keyCode && 1 == t.length && (e.target.value = "");
-    };
-  for (var A of f)
-    A.addEventListener("keydown", y),
-      A.addEventListener("input", b, !1),
-      A.addEventListener("paste", v, !1);
-  const E = document.querySelectorAll("._anim-items");
-  if (E.length > 0) {
-    function C() {
-      for (let e = 0; e < E.length; e++) {
-        const t = E[e],
-          s = t.offsetHeight,
-          l = _(t).top,
-          a = 4;
-        let i = window.innerHeight - s / a;
-        s > window.innerHeight &&
-          (i = window.innerHeight - window.innerHeight / a),
-          pageYOffset > l - i && pageYOffset < l + s
-            ? t.classList.add("_active")
-            : t.classList.remove("_active");
+      const r = document.querySelectorAll("form");
+      function d(e) {
+        e.preventDefault();
+        let t = new FormData(r);
+        t.append("id", Math.random());
+        let s = {};
+        t.forEach((e, t) => {
+          s[t] = e;
+        }),
+          console.log(s),
+          (async function (e, t) {
+            const s = await fetch(`${e}`, {
+              method: "POST",
+              headers: { "Content-type": "application/json" },
+              body: JSON.stringify(t),
+            });
+            if ((console.log(s), !s.ok))
+              throw new Error(`Could not fetch ${e}, status:${s.status} `);
+            return await s.json();
+          })("http://localhost:3000/people", s).catch((e) => console.error(e));
       }
-    }
-    function _(e) {
-      const t = e.getBoundingClientRect(),
-        s = window.pageXOffset || document.documentElement.scrollLeft,
-        l = window.pageYOffset || document.documentElement.scrollTop;
-      return { top: t.top + l, left: t.left + s };
-    }
-    window.addEventListener("scroll", C),
-      setTimeout(() => {
-        C();
-      }, 300);
-  }
-  (window.FLS = !0),
+      r.addEventListener("submit", (e) => d(e), { once: !0 });
+    }),
+    (window.FLS = !0),
     (function (e) {
       let t = new Image();
       (t.onload = t.onerror =
@@ -1236,7 +1296,7 @@
             (t.dataset.placeholder && (t.placeholder = ""),
             t.classList.add("_form-focus"),
             t.parentElement.classList.add("_form-focus"),
-            p.removeError(t));
+            m.removeError(t));
         }),
         document.body.addEventListener("focusout", function (e) {
           const t = e.target;
@@ -1244,9 +1304,51 @@
             (t.dataset.placeholder && (t.placeholder = t.dataset.placeholder),
             t.classList.remove("_form-focus"),
             t.parentElement.classList.remove("_form-focus"),
-            t.hasAttribute("data-validate") && p.validateInput(t));
+            t.hasAttribute("data-validate") && m.validateInput(t));
         });
     })(),
-    m(),
-    (u.selectModule = new h({}));
+    (function (e) {
+      const t = document.forms;
+      if (t.length)
+        for (const e of t)
+          e.addEventListener("submit", function (e) {
+            s(e.target, e);
+          }),
+            e.addEventListener("reset", function (e) {
+              const t = e.target;
+              m.formClean(t);
+            });
+      async function s(t, s) {
+        if (0 === (e ? m.getErrors(t) : 0)) {
+          if (t.hasAttribute("data-ajax")) {
+            s.preventDefault();
+            const e = t.getAttribute("action")
+                ? t.getAttribute("action").trim()
+                : "#",
+              a = t.getAttribute("method")
+                ? t.getAttribute("method").trim()
+                : "GET",
+              i = new FormData(t);
+            t.classList.add("_sending");
+            const o = await fetch(e, { method: a, body: i });
+            if (o.ok) {
+              await o.json();
+              t.classList.remove("_sending"), l(t);
+            } else alert("Ошибка"), t.classList.remove("_sending");
+          } else t.hasAttribute("data-dev") && (s.preventDefault(), l(t));
+        } else {
+          s.preventDefault();
+          const e = t.querySelector("._form-error");
+          e && t.hasAttribute("data-goto-error") && h(e, !0, 1e3);
+        }
+      }
+      function l(e) {
+        document.dispatchEvent(
+          new CustomEvent("formSent", { detail: { form: e } })
+        ),
+          m.formClean(e),
+          r(`[Формы]: ${"Форма отправлена!"}`);
+      }
+    })(!0),
+    (p.selectModule = new u({}));
 })();
