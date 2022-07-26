@@ -172,7 +172,7 @@
             this.options.classes.popupActive
           ),
           document.body.classList.add(this.options.classes.bodyActive),
-          this._reopen ? (this._reopen = !1) : o(),
+          this._reopen ? (this._reopen = !1) : n(),
           this.targetOpen.element.setAttribute("aria-hidden", "false"),
           (this.previousOpen.selector = this.targetOpen.selector),
           (this.previousOpen.element = this.targetOpen.element),
@@ -211,7 +211,7 @@
           this.previousOpen.element.setAttribute("aria-hidden", "true"),
           this._reopen ||
             (document.body.classList.remove(this.options.classes.bodyActive),
-            o(),
+            n(),
             (this.isOpen = !1)),
           this._removeHash(),
           this._selectorOpen &&
@@ -343,10 +343,10 @@
     },
     a = (e, t = 500) => (e.hidden ? l(e, t) : s(e, t)),
     i = !0,
-    o = (e = 500) => {
-      document.documentElement.classList.contains("lock") ? n(e) : c(e);
-    },
     n = (e = 500) => {
+      document.documentElement.classList.contains("lock") ? o(e) : c(e);
+    },
+    o = (e = 500) => {
       let t = document.querySelector("body");
       if (i) {
         let s = document.querySelectorAll("[data-lp]");
@@ -420,44 +420,17 @@
             const s = t.split(","),
               l = s[1],
               i = s[2],
-              o = window.matchMedia(s[0]),
-              n = e.filter(function (e) {
+              n = window.matchMedia(s[0]),
+              o = e.filter(function (e) {
                 if (e.value === l && e.type === i) return !0;
               });
-            a.push({ itemsArray: n, matchMedia: o });
+            a.push({ itemsArray: o, matchMedia: n });
           }),
           a
         );
     }
   }
-  let h = (e, t = !1, s = 500, l = 0) => {
-    const a = document.querySelector(e);
-    if (a) {
-      let i = "",
-        o = 0;
-      t &&
-        ((i = "header.header"), (o = document.querySelector(i).offsetHeight));
-      let c = {
-        speedAsDuration: !0,
-        speed: s,
-        header: i,
-        offset: l,
-        easing: "easeOutQuad",
-      };
-      if (
-        (document.documentElement.classList.contains("menu-open") &&
-          (n(), document.documentElement.classList.remove("menu-open")),
-        "undefined" != typeof SmoothScroll)
-      )
-        new SmoothScroll().animateScroll(a, "", c);
-      else {
-        let e = a.getBoundingClientRect().top + scrollY;
-        window.scrollTo({ top: o ? e - o : e, behavior: "smooth" });
-      }
-      r(`[gotoBlock]: Юхуу...едем к ${e}`);
-    } else r(`[gotoBlock]: Ой ой..Такого блока нет на странице: ${e}`);
-  };
-  class u {
+  class h {
     constructor(e, t = null) {
       if (
         ((this.config = Object.assign({ init: !0, logging: !0 }, e)),
@@ -782,15 +755,15 @@
         l = e.selected && !t.hasAttribute("data-show-selected") ? "hidden" : "",
         a = e.dataset.class ? ` ${e.dataset.class}` : "",
         i = !!e.dataset.href && e.dataset.href,
-        o = e.hasAttribute("data-href-blank") ? 'target="_blank"' : "";
-      let n = "";
+        n = e.hasAttribute("data-href-blank") ? 'target="_blank"' : "";
+      let o = "";
       return (
-        (n += i
-          ? `<a ${o} ${l} href="${i}" data-value="${e.value}" class="${this.selectClasses.classSelectOption}${a}${s}">`
+        (o += i
+          ? `<a ${n} ${l} href="${i}" data-value="${e.value}" class="${this.selectClasses.classSelectOption}${a}${s}">`
           : `<button ${l} class="${this.selectClasses.classSelectOption}${a}${s}" data-value="${e.value}" type="button">`),
-        (n += this.getSelectElementContent(e)),
-        (n += i ? "</a>" : "</button>"),
-        n
+        (o += this.getSelectElementContent(e)),
+        (o += i ? "</a>" : "</button>"),
+        o
       );
     }
     setOptions(e, t) {
@@ -838,7 +811,7 @@
     }
     setSelectChange(e) {
       if (
-        (e.hasAttribute("data-validate") && m.validateInput(e),
+        (e.hasAttribute("data-validate") && p.validateInput(e),
         e.hasAttribute("data-submit") && e.value)
       ) {
         let t = document.createElement("button");
@@ -890,8 +863,8 @@
       this.config.logging && r(`[select]: ${e}`);
     }
   }
-  const p = { inputMaskModule: null, selectModule: null };
-  let m = {
+  const u = { inputMaskModule: null, selectModule: null };
+  let p = {
     getErrors(e) {
       let t = 0,
         s = e.querySelectorAll("*[data-required]");
@@ -944,7 +917,7 @@
             const s = t[e];
             s.parentElement.classList.remove("_form-focus"),
               s.classList.remove("_form-focus"),
-              m.removeError(s),
+              p.removeError(s),
               (s.value = s.dataset.placeholder);
           }
           let s = e.querySelectorAll(".checkbox__input");
@@ -952,12 +925,12 @@
             for (let e = 0; e < s.length; e++) {
               s[e].checked = !1;
             }
-          if (p.selectModule) {
+          if (u.selectModule) {
             let t = e.querySelectorAll(".select");
             if (t.length)
               for (let e = 0; e < t.length; e++) {
                 const s = t[e].querySelector("select");
-                p.selectModule.selectBuild(s);
+                u.selectModule.selectBuild(s);
               }
           }
         }, 0);
@@ -965,9 +938,9 @@
     emailTest: (e) =>
       !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,8})+$/.test(e.value),
   };
-  let g = !1;
+  let m = !1;
   setTimeout(() => {
-    if (g) {
+    if (m) {
       let e = new Event("windowScroll");
       window.addEventListener("scroll", function (t) {
         document.dispatchEvent(e);
@@ -1004,14 +977,14 @@
         t = document.querySelector("body");
       if (e.any()) {
         t.classList.add("touch");
-        let h = document.querySelectorAll(".menu-drop__arrow");
-        for (let u = 0; u < h.length; u++) {
-          let p = h[u].previousElementSibling,
-            m = h[u].nextElementSibling,
-            g = h[u];
-          p.classList.add("parent"),
-            p.addEventListener("click", function () {
-              m.classList.toggle("open"), g.classList.toggle("active");
+        let r = document.querySelectorAll(".menu-drop__arrow");
+        for (let d = 0; d < r.length; d++) {
+          let h = r[d].previousElementSibling,
+            u = r[d].nextElementSibling,
+            p = r[d];
+          h.classList.add("parent"),
+            h.addEventListener("click", function () {
+              u.classList.toggle("open"), p.classList.toggle("active");
             });
         }
       } else t.classList.add("mouse");
@@ -1037,8 +1010,8 @@
           if (t.value.length == a) {
             if (["7", "8", "9"].indexOf(s[0]) > -1) {
               "9" == s[0] && (s = "7" + s);
-              var o = "8" == s[0] ? "8" : "+7";
-              (i = t.value = o + " "),
+              var n = "8" == s[0] ? "8" : "+7";
+              (i = t.value = n + " "),
                 s.length > 1 && (i += "(" + s.substring(1, 4)),
                 s.length >= 5 && (i += ") " + s.substring(4, 7)),
                 s.length >= 8 && (i += "-" + s.substring(7, 9)),
@@ -1047,21 +1020,21 @@
             t.value = i;
           } else e.data && /\D/g.test(e.data) && (t.value = s);
         },
-        o = function (e) {
+        n = function (e) {
           var t = e.target.value.replace(/\D/g, "");
           8 == e.keyCode && 1 == t.length && (e.target.value = "");
         };
-      for (var n of s)
-        n.addEventListener("keydown", o),
-          n.addEventListener("input", i, !1),
-          n.addEventListener("paste", a, !1);
+      for (var o of s)
+        o.addEventListener("keydown", n),
+          o.addEventListener("input", i, !1),
+          o.addEventListener("paste", a, !1);
       const c = document.querySelectorAll("._anim-items");
       if (c.length > 0) {
-        function f() {
+        function m() {
           for (let e = 0; e < c.length; e++) {
             const t = c[e],
               s = t.offsetHeight,
-              l = S(t).top,
+              l = g(t).top,
               a = 4;
             let i = window.innerHeight - s / a;
             s > window.innerHeight &&
@@ -1071,39 +1044,38 @@
                 : t.classList.remove("_active");
           }
         }
-        function S(e) {
+        function g(e) {
           const t = e.getBoundingClientRect(),
             s = window.pageXOffset || document.documentElement.scrollLeft,
             l = window.pageYOffset || document.documentElement.scrollTop;
           return { top: t.top + l, left: t.left + s };
         }
-        window.addEventListener("scroll", f),
+        window.addEventListener("scroll", m),
           setTimeout(() => {
-            f();
+            m();
           }, 300);
       }
-      const r = document.querySelectorAll("form");
-      function d(e) {
-        e.preventDefault();
-        let t = new FormData(r);
-        t.append("id", Math.random());
-        let s = {};
-        t.forEach((e, t) => {
-          s[t] = e;
-        }),
-          console.log(s),
-          (async function (e, t) {
-            const s = await fetch(`${e}`, {
-              method: "POST",
-              headers: { "Content-type": "application/json" },
-              body: JSON.stringify(t),
-            });
-            if ((console.log(s), !s.ok))
-              throw new Error(`Could not fetch ${e}, status:${s.status} `);
-            return await s.json();
-          })("http://localhost:3000/people", s).catch((e) => console.error(e));
-      }
-      r.addEventListener("submit", (e) => d(e), { once: !0 });
+      document.querySelectorAll("form").forEach((e) => {
+        e.addEventListener("submit", function (t) {
+          t.preventDefault();
+          let s = new FormData(e),
+            l = {};
+          s.forEach((e, t) => {
+            l[t] = e;
+          }),
+            console.log(l),
+            (async function (e, t) {
+              let s = await fetch(`${e}`, {
+                method: "POST",
+                headers: { "Content-type": "application/json" },
+                body: JSON.stringify(t),
+              });
+              if (!s.ok)
+                throw new Error(`Could not fetch ${e}, status:${s.status} `);
+              await s.json();
+            })("http://localhost:3000/people", l);
+        });
+      });
     }),
     (window.FLS = !0),
     (function (e) {
@@ -1128,7 +1100,7 @@
       let e = document.querySelector(".icon-menu");
       e &&
         e.addEventListener("click", function (e) {
-          i && (o(), document.documentElement.classList.toggle("menu-open"));
+          i && (n(), document.documentElement.classList.toggle("menu-open"));
         });
     })(),
     (function () {
@@ -1144,14 +1116,14 @@
             (e = t ? e.item : e),
               t.matches || !t
                 ? (e.classList.add("_spoller-init"),
-                  o(e),
-                  e.addEventListener("click", n))
+                  n(e),
+                  e.addEventListener("click", o))
                 : (e.classList.remove("_spoller-init"),
-                  o(e, !1),
-                  e.removeEventListener("click", n));
+                  n(e, !1),
+                  e.removeEventListener("click", o));
           });
         }
-        function o(e, t = !0) {
+        function n(e, t = !0) {
           const s = e.querySelectorAll("[data-spoller]");
           s.length > 0 &&
             s.forEach((e) => {
@@ -1163,7 +1135,7 @@
                   (e.nextElementSibling.hidden = !1));
             });
         }
-        function n(e) {
+        function o(e) {
           const t = e.target;
           if (t.closest("[data-spoller]")) {
             const s = t.closest("[data-spoller]"),
@@ -1236,10 +1208,10 @@
           const s = (e = e.item).querySelector("[data-tabs-titles]"),
             l = e.querySelectorAll("[data-tabs-title]"),
             a = e.querySelector("[data-tabs-body]");
-          e.querySelectorAll("[data-tabs-item]").forEach((i, o) => {
+          e.querySelectorAll("[data-tabs-item]").forEach((i, n) => {
             t.matches
-              ? (a.append(l[o]), a.append(i), e.classList.add("_tab-spoller"))
-              : (s.append(l[o]), e.classList.remove("_tab-spoller"));
+              ? (a.append(l[n]), a.append(i), e.classList.add("_tab-spoller"))
+              : (s.append(l[n]), e.classList.remove("_tab-spoller"));
           });
         });
       }
@@ -1259,7 +1231,7 @@
                 const t = e.querySelectorAll("[data-tabs-title]"),
                   a = e.querySelectorAll("[data-tabs-item]"),
                   i = e.dataset.tabsIndex,
-                  o = (function (e) {
+                  n = (function (e) {
                     if (e.hasAttribute("data-tabs-animate"))
                       return e.dataset.tabsAnimate > 0
                         ? e.dataset.tabsAnimate
@@ -1268,11 +1240,11 @@
                 a.length > 0 &&
                   a.forEach((e, a) => {
                     t[a].classList.contains("_tab-active")
-                      ? (o ? l(e, o) : (e.hidden = !1),
+                      ? (n ? l(e, n) : (e.hidden = !1),
                         e.closest(".popup") ||
                           (location.hash = `tab-${i}-${a}`))
-                      : o
-                      ? s(e, o)
+                      : n
+                      ? s(e, n)
                       : (e.hidden = !0);
                   });
               })(i);
@@ -1296,7 +1268,7 @@
             (t.dataset.placeholder && (t.placeholder = ""),
             t.classList.add("_form-focus"),
             t.parentElement.classList.add("_form-focus"),
-            m.removeError(t));
+            p.removeError(t));
         }),
         document.body.addEventListener("focusout", function (e) {
           const t = e.target;
@@ -1304,51 +1276,8 @@
             (t.dataset.placeholder && (t.placeholder = t.dataset.placeholder),
             t.classList.remove("_form-focus"),
             t.parentElement.classList.remove("_form-focus"),
-            t.hasAttribute("data-validate") && m.validateInput(t));
+            t.hasAttribute("data-validate") && p.validateInput(t));
         });
     })(),
-    (function (e) {
-      const t = document.forms;
-      if (t.length)
-        for (const e of t)
-          e.addEventListener("submit", function (e) {
-            s(e.target, e);
-          }),
-            e.addEventListener("reset", function (e) {
-              const t = e.target;
-              m.formClean(t);
-            });
-      async function s(t, s) {
-        if (0 === (e ? m.getErrors(t) : 0)) {
-          if (t.hasAttribute("data-ajax")) {
-            s.preventDefault();
-            const e = t.getAttribute("action")
-                ? t.getAttribute("action").trim()
-                : "#",
-              a = t.getAttribute("method")
-                ? t.getAttribute("method").trim()
-                : "GET",
-              i = new FormData(t);
-            t.classList.add("_sending");
-            const o = await fetch(e, { method: a, body: i });
-            if (o.ok) {
-              await o.json();
-              t.classList.remove("_sending"), l(t);
-            } else alert("Ошибка"), t.classList.remove("_sending");
-          } else t.hasAttribute("data-dev") && (s.preventDefault(), l(t));
-        } else {
-          s.preventDefault();
-          const e = t.querySelector("._form-error");
-          e && t.hasAttribute("data-goto-error") && h(e, !0, 1e3);
-        }
-      }
-      function l(e) {
-        document.dispatchEvent(
-          new CustomEvent("formSent", { detail: { form: e } })
-        ),
-          m.formClean(e),
-          r(`[Формы]: ${"Форма отправлена!"}`);
-      }
-    })(!0),
-    (p.selectModule = new u({}));
+    (u.selectModule = new h({}));
 })();
