@@ -977,14 +977,14 @@
         t = document.querySelector("body");
       if (e.any()) {
         t.classList.add("touch");
-        let r = document.querySelectorAll(".menu-drop__arrow");
-        for (let d = 0; d < r.length; d++) {
-          let h = r[d].previousElementSibling,
-            u = r[d].nextElementSibling,
-            p = r[d];
-          h.classList.add("parent"),
-            h.addEventListener("click", function () {
-              u.classList.toggle("open"), p.classList.toggle("active");
+        let p = document.querySelectorAll(".menu-drop__arrow");
+        for (let m = 0; m < p.length; m++) {
+          let g = p[m].previousElementSibling,
+            f = p[m].nextElementSibling,
+            S = p[m];
+          g.classList.add("parent"),
+            g.addEventListener("click", function () {
+              f.classList.toggle("open"), S.classList.toggle("active");
             });
         }
       } else t.classList.add("mouse");
@@ -1030,11 +1030,11 @@
           o.addEventListener("paste", a, !1);
       const c = document.querySelectorAll("._anim-items");
       if (c.length > 0) {
-        function m() {
+        function v() {
           for (let e = 0; e < c.length; e++) {
             const t = c[e],
               s = t.offsetHeight,
-              l = g(t).top,
+              l = b(t).top,
               a = 4;
             let i = window.innerHeight - s / a;
             s > window.innerHeight &&
@@ -1044,15 +1044,15 @@
                 : t.classList.remove("_active");
           }
         }
-        function g(e) {
+        function b(e) {
           const t = e.getBoundingClientRect(),
             s = window.pageXOffset || document.documentElement.scrollLeft,
             l = window.pageYOffset || document.documentElement.scrollTop;
           return { top: t.top + l, left: t.left + s };
         }
-        window.addEventListener("scroll", m),
+        window.addEventListener("scroll", v),
           setTimeout(() => {
-            m();
+            v();
           }, 300);
       }
       document.querySelectorAll("form").forEach((e) => {
@@ -1075,6 +1075,15 @@
               await s.json();
             })("http://localhost:3000/people", l);
         });
+      });
+      const r = document.querySelector(".menu__search-btn"),
+        d = document.querySelector(".menu__input"),
+        h = document.querySelector(".menu__form-serch"),
+        u = document.querySelector(".menu__serach-block");
+      r.addEventListener("click", function () {
+        d.classList.toggle("active"),
+          h.classList.toggle("active"),
+          u.classList.toggle("active");
       });
     }),
     (window.FLS = !0),
